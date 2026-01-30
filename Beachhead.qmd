@@ -1,0 +1,16 @@
+---
+title: "Beachhead Assignment- Approach"
+author: "Ciara Bonnett"
+format: html
+editor: visual
+---
+
+# Best Selling Albums
+
+This assignment is meant to through and over a public dataset that is available on Kaggle about the best-selling music albums of all time. The data set uses sales, artist, and release year to help to explore trends.
+
+Dataset source: https://www.kaggle.com/datasets/ciroduro01/best-selling-albums-of-all-time
+
+## Approach:
+
+I will begin by loading a dataset that I have accessible in a GitHub repository. I plan on researching the data and creating subsets that is relatable to the CSV such as album title, artist, release year, and sales. The variables can and will be renamed to improve the clarity and consistency. Once cleaned and organized I should be able to explore basic analysis to better understand the patterns in sales across artists and time periods. One anticipated challenge is ensuring that numeric variables such as sales figures are consistently formatted and free of non-numeric characters. The dataset could also have missing values that will require some cleaning.
