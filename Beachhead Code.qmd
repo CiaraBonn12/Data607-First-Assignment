@@ -1,0 +1,94 @@
+---
+title: "Beachhead Assignment- Code"
+author: "Ciara Bonnett"
+format: html
+editor: visual
+---
+
+# Best Selling Albums
+
+This assignment is meant to through and over a public dataset that is available on Kaggle about the best-selling music albums of all time. The data set uses sales, artist, and release year to help to explore trends.
+
+Dataset source: [Kaggle – Best-Selling Albums](https://www.kaggle.com/datasets/ciroduro01/best-selling-albums-of-all-time)
+
+## Approach:
+
+I will begin by loading a dataset that I have accessible in a GitHub repository. I plan on researching the data and creating subsets that is relatable to the CSV such as album title, artist, release year, and sales. The variables can and will be renamed to improve the clarity and consistency. Once cleaned and organized I should be able to explore basic analysis to better understand the patterns in sales across artists and time periods. One anticipated challenge is ensuring that numeric variables such as sales figures are consistently formatted and free of non-numeric characters. The dataset could also have missing values that will require some cleaning.
+
+```{r}
+# Load tidyverse (includes readr, dplyr, ggplot2)
+library(tidyverse)
+
+# Read the CSV directly from GitHub
+albums_raw <- read_csv(
+  "https://raw.githubusercontent.com/CiaraBonn12/Data607-First-Assignment/main/best_selling_albums.csv"
+)
+
+# Check the first few rows
+head(albums_raw)
+# 🔹 ADD THIS LINE TO SEE EXACT COLUMN NAMES
+colnames(albums_raw)
+```
+
+## Data Acquisition https://raw.githubusercontent.com/CiaraBonn12/Data607-First-Assignment/main/best_selling_albums.csv
+
+In this section, the steps for obtaining the raw data are discussed. For the analysis to be reproducible, it is important to show that the data source is publicly available, eliminating the need for local data access.
+
+## Data Preparation and Transformation
+In this section I clean the dataset by ensuring sales and year are numeric and removing rows with missing values in those fields. I then create a smaller dataset (`top_albums`) containing the 10 highest-selling albums, which makes the visualization and interpretation easier.
+```{r}
+# Clean and prepare the dataset
+
+albums <- albums_raw %>%
+  mutate(
+    Sales_Millions = as.numeric(Sales_Millions),
+    Year = as.integer(Year)
+  ) %>%
+  drop_na(Sales_Millions, Year)
+
+# Select top 10 albums by sales
+top_albums <- albums %>%
+  slice_max(Sales_Millions, n = 10)
+
+# View result
+top_albums
+```
+## Visualization
+The visualization shows a small set of albums that dominate total sales compared to the rest of the dataset. This type of “top-heavy” distribution suggests that a handful of releases account for a large share of total sales, which may reflect cultural reach, marketing, and the size of the music market in different decades.
+```{r}
+ggplot(top_albums, aes(x = reorder(Album, Sales_Millions), y = Sales_Millions)) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Top 10 Best-Selling Albums",
+    x = "Album",
+    y = "Sales (Millions)"
+  )
+```
+## Additional Summary Analysis
+This summary provides additional context by examining average album sales across decades, which helps identify broader trends beyond the top-selling albums.
+```{r}
+albums %>%
+  group_by(Decade) %>%
+  summarize(
+    avg_sales = mean(Sales_Millions, na.rm = TRUE),
+    album_count = n()
+  ) %>%
+  arrange(desc(avg_sales))
+```
+
+
+## Conclusions and Recommendations
+
+This dataset was successfully acquired from a public source (Kaggle) and made reproducible by loading it through a GitHub raw URL. After converting key variables to numeric and removing missing values, I was able to identify the top-selling albums and visualize the results.
+
+To extend this work, I could compare sales across decades using the `Decade` column, examine whether certain genres dominate high sales, or verify/update the sales values against another reference source to ensure accuracy.
+
+## Use of Generative AI
+
+Generative AI tools were used to assist with debugging R and Quarto syntax, understanding error messages, and refining the overall structure of the analysis. All code and analysis were reviewed, understood, and executed by the author.
+
+OpenAI. (2026). ChatGPT (Version 5.2) [Large language model].
+https://chat.openai.com. Accessed February 2026.
+
+
